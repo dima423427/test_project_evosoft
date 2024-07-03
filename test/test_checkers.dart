@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '_integration_core/integration_tester.dart';
-import 'package:test_project/screen_checkers.dart'; // Замените на правильный путь к вашему виджету
+import 'package:test_project/screen_checkers.dart';
 
-Future<void> main() async {
+void main() async {
   await integrationTest(
     fileFolderName: 'test_checkers',
     fileName: 'test_checkers',

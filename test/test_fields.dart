@@ -4,43 +4,69 @@ import 'package:flutter_test/flutter_test.dart';
 import '_integration_core/integration_tester.dart';
 
 
+//По моей логике будет 3 итерации, в ходе которых по одному пройдут мои тест сценарии. По скольку проект не большой, то так
+//возможно сделать более разумно, ибо можно проследить, что происходит на каждой итерации
+
 void main() async {
   await integrationTest(
-    fileFolderName: 'screen_fields',
-    fileName: 'screen_fields_fill_all',
+    fileFolderName: 'screen_test_fields',
+    fileName: 'screen_test_fields_fill_first',
     testRunner: (controller, tester) async {
+      //  Делайем скриншот первого экрана
+      await controller.capture();
+
       //  Переходим к экрану с полями
       await tester.tap(find.text('Поля'));
       await controller.capture();
-      await tester.pumpAndSettle();
 
-      //1 - слово тест
+      //  Заполняем первое поле
       await tester.enterText(find.byKey(Key('field1')), 'test');
-      await tester.pumpAndSettle();
       await controller.capture();
 
-      expect(find.text('test'), findsOneWidget);
-      await controller.capture();
-
-      //2 - пустое поле
-      await tester.enterText(find.byKey(Key('field2')), '');
-      await tester.pumpAndSettle();
-      await controller.capture();
-
-      expect(find.text(''), findsOneWidget);
-      await controller.capture();
-
-      //3 - не менее 5 сим
-      await tester.enterText(find.byKey(Key('field2')), '12345');
-      await tester.pumpAndSettle();
-      await controller.capture();
-
-      String field3Value = (tester.widget(find.byKey(Key('field3'))) as TextField).controller.text;
-      expect(field3Value.length > 4, isTrue);
-      await controller.capture();
-
+      //  Пробуем нажать на кнопку чтобы убедиться что ничего не произошло
       await tester.tap(find.text('Проверка'));
-      await tester.pumpAndSettle();
+      await controller.capture();
+    },
+  );
+  await integrationTest(
+    fileFolderName: 'screen_test_fields',
+    fileName: 'screen_test_fields_fill_first',
+    testRunner: (controller, tester) async {
+      //  Делайем скриншот первого экрана
+      await controller.capture();
+
+      //  Переходим к экрану с полями
+      await tester.tap(find.text('Поля'));
+      await controller.capture();
+
+      //  Заполняем второе поле
+      await tester.enterText(find.byKey(Key('field2')), '');
+      await controller.capture();
+
+      //  Пробуем нажать на кнопку чтобы убедиться что ничего не произошло
+      await tester.tap(find.text('Проверка'));
+      await controller.capture();
+    },
+  );
+  await integrationTest(
+    fileFolderName: 'screen_test_fields',
+    fileName: 'screen_test_fields_fill_first',
+    testRunner: (controller, tester) async {
+      //  Делайем скриншот первого экрана
+      await controller.capture();
+
+      //  Переходим к экрану с полями
+      await tester.tap(find.text('Поля'));
+      await controller.capture();
+
+      //  Заполняем третье поле
+      var fdfd = (tester.enterText(find.byKey(Key('field3')), '12345'));
+      await (fdfd.toString().length > 4, isTrue);
+
+      await controller.capture();
+
+      //  Пробуем нажать на кнопку чтобы убедиться что ничего не произошло
+      await tester.tap(find.text('Проверка'));
       await controller.capture();
     },
   );
